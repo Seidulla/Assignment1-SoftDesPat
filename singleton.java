@@ -1,27 +1,27 @@
+public class ImageProcess {
+    private static ImageProcess single;
 
-public class ImageProcessor {
-    private static ImageProcessor instance;
+    private ImageProcess() {}
 
-    private ImageProcessor() {}
-
-    public static ImageProcessor getInstance() {
-        if (instance == null) {
-            instance = new ImageProcessor();
+    public static ImageProcess getInstance() {
+        if (single == null) {
+            single = new ImageProcess();
         }
-        return instance;
+        return single;
     }
 
    
     private ImageFilterStrategy filterStrategy;
 
-    public void setFilterStrategy(ImageFilterStrategy filterStrategy) {
+    public void selectFilterStrategy(ImageFilterStrategy filterStrategy) {
         this.filterStrategy = filterStrategy;
     }
 
-    public void processImage(String image) {
-        System.out.println("Processing image using " + filterStrategy.getName() + " filter...");
+    public void processImageWithSelectedFilter(String image) {
+        System.out.println("Selected filter: " + filterStrategy.getName());
         filterStrategy.applyFilter(image);
     }
+    
 }
 
 
@@ -34,7 +34,7 @@ interface ImageFilterStrategy {
 class GrayscaleFilter implements ImageFilterStrategy {
     @Override
     public void applyFilter(String image) {
-        System.out.println("Applying Grayscale Filter to the image: " + image);
+        System.out.println("it is Grayscale filter " + image);
     }
 
     @Override
@@ -46,7 +46,7 @@ class GrayscaleFilter implements ImageFilterStrategy {
 class SepiaFilter implements ImageFilterStrategy {
     @Override
     public void applyFilter(String image) {
-        System.out.println("Applying Sepia Filter to the image: " + image);
+        System.out.println("It is Sepia filter: " + image);
     }
 
     @Override
@@ -54,17 +54,16 @@ class SepiaFilter implements ImageFilterStrategy {
         return "Sepia";
     }
 }
-
 public class ImageProcessingApp {
     public static void main(String[] args) {
        
-        ImageProcessor processor = ImageProcessor.getInstance();
+        ImageProcess processor = ImageProcess.getInstance();
 
         
         processor.setFilterStrategy(new GrayscaleFilter());
-        processor.processImage("image1.jpg");
+        processor.processImage("grayscaleIMG.jpg");
 
         processor.setFilterStrategy(new SepiaFilter());
-        processor.processImage("image2.jpg");
+        processor.processImage("sepiaIMG.jpg");
     }
 }
